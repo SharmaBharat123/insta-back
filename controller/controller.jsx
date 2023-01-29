@@ -3,7 +3,7 @@ const { UserSchema } = require("../model/model.jsx")
 
 
 
-mongoose.model('InstaUser', UserSchema)
+const User = mongoose.model('InstaUser', UserSchema)
 
 const createPost = async (req, res) => {
 
