@@ -3,20 +3,30 @@ const bodyParser =require('body-parser')
 const cors =require('cors')
 const mongoose =require('mongoose')
 const postRoutes = require('./routes/routes.jsx')
-//const {User, Post} = require("./model/model.jsx")
+const {User} = require("./model/model.jsx")
 const app =express();
 
-
-const uri = `mongodb+srv://Bharat:<Bharat>@cluster0.nv6ongt.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://Bharat:Sharma@cluster0.rtqrgi5.mongodb.net/?retryWrites=true&w=majority`
 mongoose.set('strictQuery', true)
-mongoose.connect(uri,(err)=>{
-    if(err){
-        console.log("Connection to mongodb failed")
-    }
-    else{
-        console.log("Connected to mongodb successfully")
-    }
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology:true})
+.then(()=>console.log('Database connected Succesfully'))
+.catch((error)=> console.log(error.message));
+
+
+
+app.post("/user", async(req,resp)=>{
+    const {postImage, author, location, description,date} = req.body
+    const userObject = new User({
+        postImage,
+        author,
+        location,
+        description,
+        date
+    })
+    const response = await userObject.create()
+    resp.json({message:response})
 })
+
 
 
 app.use(bodyParser.json({limit:"30mb", extended:true}));
